@@ -1,155 +1,147 @@
 #!/usr/bin/env bash
-# User Onloading
+# User Offboarding Script
 
+# Initialize the full path of GAM
 GAM=~/bin/gamadv-xtd3/gam
 
-echo "PLease enter the staff's first name: "
+# Get Command line arguments for Employee Email and Term Type
+POSITIONAL=()
+while [[ $# -gt 0 ]]; do
+    key="$1"
 
-read firstName
+    case $key in
+    -e | --email)
+        EMPLOYEE="$2"
+        shift # past argument
+        shift # past value
+        ;;
+    -t | --termtype)
+        TERMTYPE="$2"
+        shift # past argument
+        shift # past value
+        ;;
+    *) # unknown option
+        POSITIONAL+=("$1") # save it in an array for later
+        shift              # past argument
+        ;;
+    esac
+done
+set -- "${POSITIONAL[@]}" # restore positional parameters
 
-echo "Please enter staff's Lastname: "
-
-read lastName
-
-echo "Please enter the email you wish to give them: "
-
-read staffEmail
-
-start_logger() {
-    exec &> >(tee onboard.log)
-    echo "$(whoami) conducting offboarding for $staffEmail on $(date)"
-}
-
+# Verify user exists in Google Suite
 email_verification() {
     echo "Checking to see if user exists"
-    if ${GAM} info user "${staffEmail}" >/dev/null 2>&1; then
-        printf %s\\n "Please try again and enter a valid email address. This one is already taken"
-        exit 1
+    if ${GAM} info user "${EMPLOYEE}" >/dev/null 2>&1; then
+        return
     else
-        echo "$staffEmail does not exist in Google Suite. We are clear to proceed"
+        echo "$EMPLOYEE does not exist in Google Suite."
     fi
-    printf %s\\n "Going to next step"
-
+    printf %s\\n "Please enter a valid email address."
+    exit 1
 }
 
-create_email() {
-    echo "creating email for $staffEmail"
-    ${GAM} create user "${staffEmail}"
-    ${GAM} update user "${staffEmail}" givenname "${firstName}"
-    ${GAM} update user "${staffEmail}" familyname "${lastName}"
-    echo "succefully created user"
-    
+# Create log file and record user information
+start_logger() {
+    exec &> >(tee offboard.log)
+    echo "$(whoami) conducting offboarding for $EMPLOYEE on $(date)"
+}
+
+# Get the username and last name of employee
+get_name() {
+    USER_NAME="${EMPLOYEE//@coronacharter.org/}"
+    LAST_NAME=$(echo "$USER_NAME" | cut -f2 -d'.')
 }
 
 
 reset_password() {
-    echo "Resetting GSuite password to R3setPWD!"
-    PASSWORD=R3setPWD!
-    ${GAM} update user "${staffEmail}" password "${PASSWORD}"
-    ${GAM} update user "${staffEmail}" changepassword on
+    echo "Resetting GSuite password"
+    PASSWORD=$(openssl rand -base64 12)
+    ${GAM} update user "${EMPLOYEE}" password "${PASSWORD}"
+    ${GAM} update user "${EMPLOYEE}" changepassword on
+    sleep 2
+    ${GAM} update user "${EMPLOYEE}" changepassword off
 }
 
-change_ou() {
-    echo "Which site is staff working at? Please enter a number"
-    echo -n "[1]BCCS [2]Morcs [3]BCCHS [4]LSC: "
-    read VAR
-if [[ $VAR -eq 1 ]]
-then
-  echo "changing to BCCS Staff OU"
-  ${GAM} update org '/Staff/BCCS Staff' add users "${staffEmail}"
-elif [[ $VAR -eq 2 ]]
-then
-  echo "changing to MORCS Staff OU"
-  ${GAM} update org '/Staff/MORCS Staff' add users "${staffEmail}"
-elif [[ $VAR -eq 3 ]]
-then
-  echo "changing to BCCHS Staff OU"
-  ${GAM} update org '/Staff/BCCHS Staff' add users "${staffEmail}"
-elif [[ $VAR -eq 4 ]]
-then
-  echo "changing to LSC Staff OU"
-  ${GAM} update org '/Staff/LSC' add users "${staffEmail}"
-else
-  echo "did not enter a correct number"
-  exit 1
-fi
-
-echo "is this a teacher or staff"
-    echo -n "[1]Teacher [2]Staff [3]LSC: "
-read TOF
-if [[ $VAR -eq 1 && $TOF -eq 1 ]]
-then
-  echo "adding to BCCS Teachers Group"
-  ${GAM} update group bccsteachers@coronacharter.org add member "${staffEmail}"
-elif [[ $VAR -eq 1 && $TOF -eq 2  ]]
-then
-  echo "changing to BCCS Staff Group"
-  ${GAM} update group bccstutors@coronacharter.org add member "${staffEmail}"
-elif [[ $VAR -eq 2 && $TOF -eq 1 ]]
-then
-  echo "changing to Morcs Teachers Group"
-${GAM} update group teachers@romerocharter.org add member "${staffEmail}"
-elif [[ $VAR -eq 2 && $TOF -eq 2 ]]
-then
-  echo "changing to Morcs Staff Group"
-${GAM} update group staff@romerocharter.org add member "${staffEmail}"
-elif [[ $VAR -eq 3 && $TOF -eq 1 ]]
-then
-  echo "changing to BCCHS Teacher Group"
-${GAM} update group bcchsteachers@coronacharter.org add member "${staffEmail}"
-elif [[ $VAR -eq 3 && $TOF -eq 2 ]]
-then
-  echo "changing to BCCHS staff Group"
-${GAM} update group bcchstutors@coronacharter.org add member "${staffEmail}"
-elif [[ $VAR -eq 4 && $TOF -eq 3 ]]
-then
-  echo "changing to LSC Group"
-${GAM} update group lsc@ypics.org add member "${staffEmail}"
-else
-  echo "did not enter a correct number"
-  exit 1
-fi
+# Remove all App-Specific account passwords, delete MFA Recovery Codes,
+# Delete all OAuth tokens
+# Generating new set of MFA recovery codes for the user
+reset_token() {
+    echo "Resetting GSuite tokens"
+    ${GAM} user "${EMPLOYEE}" deprovision
+    ${GAM} user "${EMPLOYEE}" update backupcodes
 }
 
-add_license() {
-    echo "does this account need a enterprise license"
-    echo -n "[1]Yes [2]No: "
-    read VAR
-if [[ $VAR -eq 1 ]]
-then
-  echo "Applying Education Plus License"
-  ${GAM} user "${staffEmail}" add license 1010310002
-elif [[ $VAR -eq 2 ]]
-then
-  echo "license skipped"
-else
-  echo "did not enter a correct number"
-  exit 1
-fi
+# Remove all email delegation
+remove_delegates() {
+    echo "Removing email delegates"
+    DELEGATES=$(${GAM} user "${EMPLOYEE}" print delegates)
+    for DELEGATE in "${DELEGATES[@]}"; do
+        ${GAM} user "${EMPLOYEE}" delete delegate "${DELEGATE}"
+    done
 }
-add_Voicelicense() {
-    echo "does this account need a Voice license"
-    echo -n "[1]Yes [2]No: "
-    read VAR
-if [[ $VAR -eq 1 ]]
-then
-  echo "Applying Voice license"
-  ${GAM} user "${staffEmail}" add license 1010330004
-elif [[ $VAR -eq 2 ]]
-then
-  echo "license skipped"
-else
-  echo "did not enter a correct number"
-  exit 1
-fi
+
+# Wipe device profile and remove Google accounts from all mobile devices
+wipe_devices() {
+    echo "Wiping all associated mobile devices"
+    $GAM print mobile query "email:$EMPLOYEE" >>/tmp/tmp.mobile-data.csv
+    $GAM csv /tmp/tmp.mobile-data.csv gam update mobile ~resourceId action account_wipe
+} 
+
+# Remove all forwarding addresses
+# Disable IMAP
+# Disable POP
+# Hide user from directory
+disable_user() {
+    echo "Disabling Email and hiding from Directory"
+    $GAM user "${EMPLOYEE}" forward off
+    $GAM user "${EMPLOYEE}" imap off
+    $GAM user "${EMPLOYEE}" pop off
+    $GAM update user "${EMPLOYEE}" gal off
+}
+
+remove_license() {
+    echo "Removing Education Plus License & OR Google Voice License"
+    ${GAM} user "${EMPLOYEE}" delete license 1010310002
+    ${GAM} user "${EMPLOYEE}" delete license 1010330004
 }
 
 
-email_verification
+# Remove the employee from all groups
+remove_groups() {
+    echo "Removing user from all groups"
+    ${GAM} info user "${EMPLOYEE}" | grep -A 10000 "Groups:" | grep -i -o '[A-Z0-9._%+-]\+@[A-Z0-9.-]\+\.[A-Z]\{2,4\}' >/tmp/"${EMPLOYEE}".txt
+    while read -r GROUP; do
+        [ -z "$GROUP" ] && continue
+        ${GAM} update group "${GROUP}" remove member "${EMPLOYEE}"
+    done </tmp/"${EMPLOYEE}".txt
+}
+# Remove admin privledges from all groups
+remove_AdminRights() {
+    echo "Removing admin Rights from " $EMPLOYEE
+    ${GAM} print admins user "${EMPLOYEE}" | ${GAM} csv - gam delete admin ~roleAssignmentId
+}
+
+
+# Delegate email access to manager if termination is Involuntary
+# Suspend user to kick off all logged in sessions
+# Unsuspend Involuntary termination user for email delgation
+# Verify that user was moved to correct Organizational Unit
+suspend_user() {
+    ${GAM} update user "${EMPLOYEE}" suspended on
+        echo "Suspending user and moving to z-Archive OU"
+        ${GAM} update org 'z-Archive' add users "${EMPLOYEE}"
+    ORG_UNIT=$(${GAM} info user "${EMPLOYEE}" | grep "Google Org")
+    echo "$EMPLOYEE moved to $ORG_UNIT"
+}
+
+# Main
 start_logger
-create_email
+email_verification
+get_name
 reset_password
-change_ou
-add_license
-add_Voicelicense
-
+reset_token
+disable_user
+remove_groups
+suspend_user
+remove_AdminRights
+remove_license
