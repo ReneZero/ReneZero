@@ -73,11 +73,50 @@ else
   echo "did not enter a correct number"
   exit 1
 fi
+
+echo "is this a teacher or staff"
+    echo -n "[1]Teacher [2]Staff [3]LSC: "
+read TOF
+if [[ $VAR -eq 1 && $TOF -eq 1 ]]
+then
+  echo "adding to BCCS Teachers Group & Assigning Admin Rights"
+  ${GAM} update group bccsteachers@coronacharter.org add member "${staffEmail}"
+${GAM} create admin "${staffEmail}" Teacher_Admin_Password_Reset_BCCS org_unit '/Students/BCCS Students'
+elif [[ $VAR -eq 1 && $TOF -eq 2  ]]
+then
+  echo "changing to BCCS Staff Group"
+  ${GAM} update group bccstutors@coronacharter.org add member "${staffEmail}"
+elif [[ $VAR -eq 2 && $TOF -eq 1 ]]
+then
+  echo "changing to Morcs Teachers Group & Assigning Admin Rights"
+${GAM} update group teachers@romerocharter.org add member "${staffEmail}"
+${GAM} create admin "${staffEmail}" Teacher_Admin_Password_Reset_MORCS org_unit '/Students/MORCS Students'
+elif [[ $VAR -eq 2 && $TOF -eq 2 ]]
+then
+  echo "changing to Morcs Staff Group"
+${GAM} update group staff@romerocharter.org add member "${staffEmail}"
+elif [[ $VAR -eq 3 && $TOF -eq 1 ]]
+then
+  echo "changing to BCCHS Teacher Group & Assigning Admin Rights"
+${GAM} update group bcchsteachers@coronacharter.org add member "${staffEmail}"
+${GAM} create admin "${staffEmail}" Teacher_Admin_Password_Reset_BCCHS org_unit '/Students/BCCHS Students'
+elif [[ $VAR -eq 3 && $TOF -eq 2 ]]
+then
+  echo "changing to BCCHS staff Group"
+${GAM} update group bcchstutors@coronacharter.org add member "${staffEmail}"
+elif [[ $VAR -eq 4 && $TOF -eq 3 ]]
+then
+  echo "changing to LSC Group"
+${GAM} update group lsc@ypics.org add member "${staffEmail}"
+else
+  echo "did not enter a correct number"
+  exit 1
+fi
 }
 
 add_license() {
     echo "does this account need a enterprise license"
-    echo -n "[1]Yes [2]No"
+    echo -n "[1]Yes [2]No: "
     read VAR
 if [[ $VAR -eq 1 ]]
 then
@@ -93,7 +132,7 @@ fi
 }
 add_Voicelicense() {
     echo "does this account need a Voice license"
-    echo -n "[1]Yes [2]No"
+    echo -n "[1]Yes [2]No: "
     read VAR
 if [[ $VAR -eq 1 ]]
 then
@@ -108,6 +147,7 @@ else
 fi
 }
 
+
 email_verification
 start_logger
 create_email
@@ -115,4 +155,3 @@ reset_password
 change_ou
 add_license
 add_Voicelicense
-
