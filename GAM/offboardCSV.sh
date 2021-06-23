@@ -14,6 +14,14 @@ suspend_user() {
         ${GAM} csv $csvFile gam update org 'z-Archive' add users "~email"
         echo "Suspending"
 }
+reset_password() {
+    echo "Resetting GSuite password"
+    PASSWORD=$(openssl rand -base64 12)
+    ${GAM} update user "~email" password "${PASSWORD}"
+    ${GAM} update user "~email"changepassword on
+    sleep 2
+    ${GAM} update user "~email" changepassword off
+}
 
 disable_user() {
     echo "Disabling Email and hiding from Directory"
@@ -36,6 +44,16 @@ remove_groups() {
         ${GAM} csv $csvFile gam update group "${GROUP}" remove member "~email"
     done </tmp/remove.txt
 }
+reset_token() {
+    echo "Resetting GSuite tokens"
+    ${GAM} user "~email" deprovision
+    ${GAM} user "~email" update backupcodes
+}
+# Remove admin privledges from all groups
+remove_AdminRights() {
+    echo "Removing admin Rights"
+    ${GAM} print admins user "~email" | ${GAM} csv - gam delete admin ~roleAssignmentId
+}
 
 echo "Please drag csv file here: "
 
@@ -43,6 +61,8 @@ read csvFile
 
 start_logger
 remove_groups
+reset_token
 disable_user
 remove_license
 suspend_user
+remove_AdminRights
