@@ -11,7 +11,7 @@ start_logger() {
 suspend_user() {
     ${GAM} csv $csvFile gam update user "~email" suspended on
         echo "Suspending user and moving to z-Archive OU"
-        ${GAM} csv $csvFile gam update org 'z-Archive' add users "~email"
+        ${GAM} csv $csvFile gam update org 'Suspended' add users "~email"
         echo "Suspending"
 }
 reset_password() {
