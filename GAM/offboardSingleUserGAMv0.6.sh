@@ -129,7 +129,7 @@ remove_AdminRights() {
 suspend_user() {
     ${GAM} update user "${EMPLOYEE}" suspended on
         echo "Suspending user and moving to z-Archive OU"
-        ${GAM} update org 'z-Archive' add users "${EMPLOYEE}"
+        ${GAM} update org 'Suspended' add users "${EMPLOYEE}"
     ORG_UNIT=$(${GAM} info user "${EMPLOYEE}" | grep "Google Org")
     echo "$EMPLOYEE moved to $ORG_UNIT"
 }
