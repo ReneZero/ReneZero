@@ -17,7 +17,7 @@ read staffEmail
 
 start_logger() {
     exec &> >(tee onboard.log)
-    echo "$(whoami) conducting offboarding for $staffEmail on $(date)"
+    echo "$(whoami) conducting onboarding for $staffEmail on $(date)"
 }
 
 email_verification() {
@@ -84,8 +84,28 @@ then
 ${GAM} create admin "${staffEmail}" Teacher_Admin_Password_Reset_BCCS org_unit '/Students/BCCS Students'
 elif [[ $VAR -eq 1 && $TOF -eq 2  ]]
 then
-  echo "changing to BCCS Staff Group"
-  ${GAM} update group bccstutors@coronacharter.org add member "${staffEmail}"
+  echo "What position is the staff member?"
+    echo -n "[1]Tutor [2]scc [3]sped [4]afterschool [5]admin: "
+    read POS
+  if [[ $POS -eq 1 ]]; then
+    echo "Moving to Tutor group"
+    ${GAM} update group bccstutors@coronacharter.org add member "${staffEmail}"
+elif [[ $POS -eq 2 ]]; then
+    echo "moving to scc group"
+  ${GAM} update group bccsscc@coronacharter.org add member "${staffEmail}"
+elif [[ $POS -eq 3 ]]; then
+    echo "moving to sped group"
+  ${GAM} update group bccssped@coronacharter.org add member "${staffEmail}"
+elif [[ $POS -eq 4 ]]; then
+  echo "moving to afterschool group"
+  ${GAM} update group bccsafterschool@coronacharter.org add member "${staffEmail}"
+elif [[ $POS -eq 5 ]]; then
+  echo "moving to admin group"
+  ${GAM} update group bccsadmin@coronacharter.org add member "${staffEmail}"
+else
+   echo "did not enter a correct number"
+  exit 1
+fi
 elif [[ $VAR -eq 2 && $TOF -eq 1 ]]
 then
   echo "changing to Morcs Teachers Group & Assigning Admin Rights"
@@ -93,8 +113,28 @@ ${GAM} update group teachers@romerocharter.org add member "${staffEmail}"
 ${GAM} create admin "${staffEmail}" Teacher_Admin_Password_Reset_MORCS org_unit '/Students/MORCS Students'
 elif [[ $VAR -eq 2 && $TOF -eq 2 ]]
 then
-  echo "changing to Morcs Staff Group"
-${GAM} update group staff@romerocharter.org add member "${staffEmail}"
+  echo "What position is the staff member?"
+    echo -n "[1]Tutor [2]scc [3]sped [4]afterschool [5]admin: "
+    read POS
+  if [[ $POS -eq 1 ]]; then
+    echo "Moving to Tutor group"
+    ${GAM} update group morcstutors@romerocharter.org add member "${staffEmail}"
+elif [[ $POS -eq 2 ]]; then
+    echo "moving to scc group"
+  ${GAM} update group morcsscc@romerocharter.org add member "${staffEmail}"
+elif [[ $POS -eq 3 ]]; then
+    echo "moving to sped group"
+  ${GAM} update group morcssped@romerocharter.org add member "${staffEmail}"
+elif [[ $POS -eq 4 ]]; then
+  echo "moving to afterschool group"
+  ${GAM} update group morcsafterschool@romerocharter.org add member "${staffEmail}"
+elif [[ $POS -eq 5 ]]; then
+  echo "moving to admin group"
+  ${GAM} update group morcsadmin@romerocharter.org add member "${staffEmail}"
+else
+   echo "did not enter a correct number"
+  exit 1
+fi
 elif [[ $VAR -eq 3 && $TOF -eq 1 ]]
 then
   echo "changing to BCCHS Teacher Group & Assigning Admin Rights"
@@ -102,8 +142,28 @@ ${GAM} update group bcchsteachers@coronacharter.org add member "${staffEmail}"
 ${GAM} create admin "${staffEmail}" Teacher_Admin_Password_Reset_BCCHS org_unit '/Students/BCCHS Students'
 elif [[ $VAR -eq 3 && $TOF -eq 2 ]]
 then
-  echo "changing to BCCHS staff Group"
-${GAM} update group bcchstutors@coronacharter.org add member "${staffEmail}"
+  echo "What position is the staff member?"
+    echo -n "[1]Tutor [2]scc [3]sped [4]afterschool [5]admin: "
+    read POS
+  if [[ $POS -eq 1 ]]; then
+    echo "Moving to Tutor group"
+    ${GAM} update group bcchstutors@coronacharter.org add member "${staffEmail}"
+elif [[ $POS -eq 2 ]]; then
+    echo "moving to scc group"
+  ${GAM} update group bcchsscc@coronacharter.org add member "${staffEmail}"
+elif [[ $POS -eq 3 ]]; then
+    echo "moving to sped group"
+  ${GAM} update group bcchssped@coronacharter.org add member "${staffEmail}"
+elif [[ $POS -eq 4 ]]; then
+  echo "moving to afterschool group"
+  ${GAM} update group bcchsafterschool@coronacharter.org add member "${staffEmail}"
+elif [[ $POS -eq 5 ]]; then
+  echo "moving to admin group"
+  ${GAM} update group bcchsadmin@coronacharter.org add member "${staffEmail}"
+else
+   echo "did not enter a correct number"
+  exit 1
+fi
 elif [[ $VAR -eq 4 && $TOF -eq 3 ]]
 then
   echo "changing to LSC Group"
