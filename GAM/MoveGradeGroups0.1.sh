@@ -1,17 +1,28 @@
 #!/usr/bin/env bash
-# User Offboarding Script
+
 
 GAM=~/bin/gamadv-xtd3/gam
 
 start_logger() {
-    exec &> >(tee offboard.log)
+    exec &> >(tee MovingGroups.log)
     echo "$(whoami) conducting moving of groups on $(date)"
 }
+echo " WARNING Running this script will alter GSUITE"
 echo "Welcome to the moving groups script"
 echo "Which school site would you like to do first? Please enter a number"
 echo -n "[1]BCCS [2]Morcs [3]BCCHS: "
-Read SCHOOL
+read SCHOOL
 	if [[ $SCHOOL -eq 1 ]]; then
+		echo -n "Are you sure you want to proceed ? [1]Yes [2]NO: "
+		read YON
+		if [[ $YON -eq 2 ]]; then
+			echo "Goodbye"
+			exit 1
+		elif [[ $YON -eq 1 ]]; then
+			echo "Continuing"
+		else
+			echo "did not enter a valid number, Goodbye"
+		fi
 		echo "making csv file"
 		${GAM} print group-members group 8thgrade@coronacharter.org > ./8thgradeBCCS.csv
 echo "Removing graduated 8th graders"
@@ -42,6 +53,16 @@ echo "Removing graduated 8th graders"
 		echo "All done please re-run script for other sites"
 	exit 1
 elif [[ $SCHOOL -eq 2 ]]; then
+	echo -n "Are you sure you want to proceed ? [1]Yes [2]NO"
+		read YON
+		if [[ $YON -eq 2 ]]; then
+			echo "Goodbye"
+			exit 1
+		elif [[ $YON -eq 1 ]]; then
+			echo "Continuing"
+		else
+			echo "did not enter a valid number, Goodbye"
+		fi
 	echo "making csv file"
 		${GAM} print group-members group 8thgrade@romerocharter.org > ./8thgradeMORCS.csv
 echo "Removing graduated 8th graders"
@@ -70,6 +91,16 @@ echo "Removing graduated 8th graders"
 	echo "All done please re-run script for other sites"
 	exit 1
 elif [[ $SCHOOL -eq 3 ]]; then
+	echo -n "Are you sure you want to proceed ? [1]Yes [2]NO"
+		read YON
+		if [[ $YON -eq 2 ]]; then
+			echo "Goodbye"
+			exit 1
+		elif [[ $YON -eq 1 ]]; then
+			echo "Continuing"
+		else
+			echo "did not enter a valid number, Goodbye"
+		fi
 	echo "making csv file"
 		${GAM} print group-members group 12thgrade@coronacharter.org > ./12thgrade.csv
 echo "Removing graduated 12th graders"
@@ -96,7 +127,7 @@ echo "Removing graduated 12th graders"
 	echo "Please copy and paste OU above of the incoming 6th graders"
 	echo "example should look like this /Students/BCCHS Students/BCCHS 9th Grade/BCCHS 2025"
 	echo "paste the OU here: "
-	Read OU
+	read OU
 		${GAM} print users query "orgUnitPath='${OU}'" fields primaryemail > ./OUemailsMorcs.csv
 	echo "moving new incoming 9th graders to 9thgrade group"
 		${GAM} csv ./OUemails.csv gam update group 9thgrade@coronacharter.org add user "~email"
