@@ -7,7 +7,15 @@ start_logger() {
     exec &> >(tee MovingGroups.log)
     echo "$(whoami) conducting moving of groups on $(date)"
 }
-echo " WARNING Running this script will alter GSUITE"
+echo '
+##      ##    ###    ########  ##    ## #### ##    ##  ######   
+##  ##  ##   ## ##   ##     ## ###   ##  ##  ###   ## ##    ##  
+##  ##  ##  ##   ##  ##     ## ####  ##  ##  ####  ## ##        
+##  ##  ## ##     ## ########  ## ## ##  ##  ## ## ## ##   #### 
+##  ##  ## ######### ##   ##   ##  ####  ##  ##  #### ##    ##  
+##  ##  ## ##     ## ##    ##  ##   ###  ##  ##   ### ##    ##  
+ ###  ###  ##     ## ##     ## ##    ## #### ##    ##  ######   
+'
 echo "Welcome to the moving groups script"
 echo "Which school site would you like to do first? Please enter a number"
 echo -n "[1]BCCS [2]Morcs [3]BCCHS: "
