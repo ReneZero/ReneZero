@@ -113,7 +113,7 @@ elif [[ $SCHOOL -eq 3 ]]; then
 		${GAM} print group-members group 12thgrade@coronacharter.org > ./12thgrade.csv
 echo "Removing graduated 12th graders"
 		${GAM} csv ./12thgrade.csv gam update group 12thgrade@coronacharter.org delete user "~email"
-#removing 12thgrade file
+#removing 12thgrade file.
 	rm ./12thgrade.csv
 		${GAM} print group-members group 11thgrade@coronacharter.org > ./11thgradeTo12thGrade.csv
 	echo "moving 11th grade to 12th grade"
