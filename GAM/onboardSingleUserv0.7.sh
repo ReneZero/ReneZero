@@ -109,7 +109,7 @@ fi
 elif [[ $VAR -eq 2 && $TOF -eq 1 ]]
 then
   echo "changing to Morcs Teachers Group & Assigning Admin Rights"
-${GAM} update group teachers@romerocharter.org add member "${staffEmail}"
+${GAM} update group morcsteachers@romerocharter.org add member "${staffEmail}"
 ${GAM} create admin "${staffEmail}" Teacher_Admin_Password_Reset_MORCS org_unit '/Students/MORCS Students'
 elif [[ $VAR -eq 2 && $TOF -eq 2 ]]
 then
