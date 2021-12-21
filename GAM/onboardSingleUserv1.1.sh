@@ -34,7 +34,6 @@ email_verification() {
         echo "$staffEmail does not exist in Google Suite. We are clear to proceed"
     fi
     printf %s\\n "Going to next step"
-
 }
 
 create_email() {
@@ -233,6 +232,14 @@ create_snipeit_user(){
   /usr/bin/python3 ./snipe-itAPI.py $SEMAIL $SCHOOLSITE $FNAME $LNAME
 }
 
+device_checkin_mosyle(){
+  echo "what is the email of the user you are checking out items to"
+  read mosyleUserID
+  echo "Please enter the serial number of the Device you want to assign"
+  read SerialNum
+  /usr/bin/python3 ./mosyleCheckOut.py $mosyleUserID $SerialNum
+}
+
 echo "Which choice would you like to do? Please enter a number"
 echo -n "[1]Google/Mosyle/SnipeIt Account Creation only [2]Device Checkout Only [3]Both "
 read CHOICE
@@ -250,4 +257,5 @@ then
   create_snipeit_user
 elif [[ $CHOICE -eq 2 ]]
 then
-echo "hello"
+  device_checkin_mosyle
+fi
