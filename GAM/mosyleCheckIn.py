@@ -5,8 +5,8 @@ import json
 import sys
 
 # get arguments from onboard script and pass them to variables
-userID = str(sys.argv[1])
-serial_number = str(sys.argv[2])
+# userID = str(sys.argv[1])
+# serial_number = str(sys.argv[2])
 
 
 def checkOutDevice():
@@ -14,13 +14,14 @@ def checkOutDevice():
     payload ='''
     {
         "accessToken": "c8a5d56d90a0a21d10218906cd4424a52dcc54a154c1c826958255188d5421ad",
-        "elements": [
-            {
-                "operation": "assign_device",
-                "id": "new.user.1",
-                "serial_number": "AAAAAAAAAAAA"
-            }
-        ]
+        "options": {
+            "os": "ios",
+            "specific_columns": [
+                "userid",
+                "serial_number",
+                "deviceudid"
+            ]
+        }
     }
     '''
     # Converts the raw JSON to a python object so we can work with it
@@ -35,12 +36,13 @@ def checkOutDevice():
             
             
     #puts the object into a big string
-    # finishedData = json.dumps(dataToSend)
+    finishedData = json.dumps(dataToSend)
 
-    # sends a post request to mosyle API with the modified template finishedData string as the payload        
-    r = requests.post('https://managerapi.mosyle.com/v2/users', data=payload)
-    #prints the JSON that comes back from the API
-    #If "status":"OK" then user was created successfully
-    print(r.text)
-
+    r = requests.post('https://managerapi.mosyle.com/v2/listdevices', data=payload)
+    json_data = json.loads(r.text)
+    for device in json_data['response']['devices']:
+        if 'userid' in device:
+            if device['userid'] == 'mssanchez@coronacharter.org':
+                print(device)
+    
 checkOutDevice()
