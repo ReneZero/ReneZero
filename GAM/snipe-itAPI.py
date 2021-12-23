@@ -51,7 +51,7 @@ response = requests.request("POST", url, json=payload, headers=headers)
 json_data = json.loads(response.text)
 
 
-print(json_data['status'] + "!" + " " + json_data['messages'])
+print((str(json_data['status'])) + "!" + " " + (str(json_data['messages'])))
 # LSC ID = 5
 # Staff department ID = 2
 # department":{"id":2,"name":"Staff"}

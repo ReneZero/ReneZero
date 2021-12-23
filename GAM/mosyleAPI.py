@@ -54,9 +54,4 @@ finishedData = json.dumps(dataToSend)
 r = requests.post('https://managerapi.mosyle.com/v2/users', data=finishedData)
 #prints the JSON that comes back from the API
 #If "status":"OK" then user was created successfully
-exitCode = int(r.status_code)
-
-if exitCode == 200:
-    print("User was sucesfully created")
-else:
-    print("User was not created sucesfully")
+print(r.text)

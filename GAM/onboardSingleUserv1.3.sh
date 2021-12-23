@@ -7,17 +7,14 @@ start_emailCreation(){
 echo "PLease enter the staff's first name: "
 
 read firstName
-readonly FNAME=firstName
 
 echo "Please enter staff's Lastname: "
 
 read lastName
-readonly LNAME=lastName
 
 echo "Please enter the email you wish to give them: "
 
 read staffEmail
-readonly SEMAIL=staffEmail
 }
 
 start_logger() {
@@ -225,11 +222,11 @@ fi
 
 create_mosyle_user(){
   echo "Creating user in mosyle"
-  /usr/bin/python3 ./mosyleAPI.py $SEMAIL $SCHOOLSITE $TEACHERORSTAFF $FNAME $LNAME
+  /usr/bin/python3 ./mosyleAPI.py $staffEmail $SCHOOLSITE $TEACHERORSTAFF $firstName $lastName
 }
 create_snipeit_user(){
   echo "Creating user in Snipe IT"
-  /usr/bin/python3 ./snipe-itAPI.py $SEMAIL $SCHOOLSITE $FNAME $LNAME
+  /usr/bin/python3 ./snipe-itAPI.py $staffEmail $SCHOOLSITE $firstName $lastName
 }
 
 device_checkout_mosyle(){
@@ -240,33 +237,41 @@ device_checkout_mosyle(){
   /usr/bin/python3 ./mosyleCheckOut.py $mosyleUserID $SerialNum
 }
 
-echo "Which choice would you like to do? Please enter a number"
-echo -n "[1]Google/Mosyle/SnipeIt Account Creation only [2]Device Checkout Only [3]Both "
-read CHOICE
-
-if [[ $CHOICE -eq 1 ]]
-then
-  start_emailCreation
-  email_verification
-  start_logger
-  create_email
-  reset_password
-  change_ou
-  add_Voicelicense
-  create_mosyle_user
-  create_snipeit_user
-elif [[ $CHOICE -eq 2 ]]
-then
-  device_checkout_mosyle
-elif [[ $CHOICE -eq 3 ]]
-  start_emailCreation
-  email_verification
-  start_logger
-  create_email
-  reset_password
-  change_ou
-  add_Voicelicense
-  create_mosyle_user
-  create_snipeit_user
-  device_checkout_mosyle
-fi
+PS3='Which choice would you like to do? Please enter a number: '
+options=("Google/Mosyle/SnipeIt Account Creation only" "Device Checkout Only" "Both" "Quit")
+echo $PS3
+select opt in "${options[@]}"
+do
+    case $opt in
+        "Google/Mosyle/SnipeIt Account Creation only")
+            start_emailCreation
+            email_verification
+            start_logger
+            create_email
+            reset_password
+            change_ou
+            add_Voicelicense
+            create_mosyle_user
+            create_snipeit_user
+            ;;
+        "Device Checkout Only")
+            device_checkout_mosyle
+            ;;
+        "Both")
+            start_emailCreation
+            email_verification
+            start_logger
+            create_email
+            reset_password
+            change_ou
+            add_Voicelicense
+            create_mosyle_user
+            create_snipeit_user
+            device_checkout_mosyle
+            ;;
+        "Quit")
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done

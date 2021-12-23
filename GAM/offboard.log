@@ -1,0 +1,49 @@
+rene conducting offboarding for test4last4@coronacharter.org on Wed Dec 22 23:46:54 PST 2021
+Checking to see if user exists
+Resetting GSuite password
+updating user test4last4@coronacharter.org...
+updating user test4last4@coronacharter.org...
+updating user test4last4@coronacharter.org...
+Resetting GSuite tokens
+Getting Application Specific Passwords for test4last4@coronacharter.org
+No ASPs
+Invalidating 2SV Backup Codes for test4last4@coronacharter.org
+Getting tokens for test4last4@coronacharter.org...
+No Tokens
+Done deprovisioning test4last4@coronacharter.org
+Backup verification codes for test4last4@coronacharter.org (10)
+
+1. 96821414
+2. 73955335
+3. 84881322
+4. 15680593
+5. 12532856
+6. 14740949
+7. 76603860
+8. 21526600
+9. 91200428
+10. 06228018
+
+Disabling Email and hiding from Directory
+User: test4last4@coronacharter.org, Forward Enabled: False (1/1)
+Setting IMAP Access to False for test4last4@coronacharter.org (1/1)
+Setting POP Access to False for test4last4@coronacharter.org (1/1)
+updating user test4last4@coronacharter.org...
+Removing user from all groups
+ Group: bccsteachers@coronacharter.org, test4last4@coronacharter.org Removed
+ Group: bccsteachers@coronacharter.org, test4last4@coronacharter.org Remove Failed: Resource Not Found: memberKey
+updating user test4last4@coronacharter.org...
+Suspending user and moving to z-Archive OU
+ moving test4last4@coronacharter.org to /Suspended (1/1)
+test4last4@coronacharter.org moved to Google Org Unit Path: /Staff/BCCS Staff
+Removing admin Rights from  test4last4@coronacharter.org
+Using 1 processes...
+Deleting Admin Role Assignment 164943655600607
+Removing Education Plus License & OR Google Voice License
+
+ERROR: 404: User does not have a license for specified sku and product - notFound: Giving up.
+Removing license 1010310002 (Google Workspace for Education Plus - Legacy) from user test4last4@coronacharter.org
+
+ERROR: 404: User does not have a license for specified sku and product - notFound
+Removing license 1010330004 (Google Voice Standard) from user test4last4@coronacharter.org
+Which choice would you like to do? Please enter a number: 

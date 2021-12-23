@@ -2,7 +2,7 @@
 # User Offboarding Script
 
 # Initialize the full path of GAM
-GAM=~/bin/gamadv-xtd3/gam
+GAM=~/bin/gam/gam
 
 # Get Command line arguments for Employee Email and Term Type
 # POSITIONAL=()
@@ -135,48 +135,65 @@ suspend_user() {
     echo "$EMPLOYEE moved to $ORG_UNIT"
 }
 
-device_checkout_mosyle(){
+device_checkin_mosyle() {
     echo "Type in the email of the staff member: "
     read MOSYLEEMAIL
     echo "Which device would you like to checkin? Please enter a number"
-    echo -n "[1]Mac [2]Ipad [3]Both"
+    echo -n "[1]Mac [2]Ipad [3]Both: "
     read MOSYLECHOICE
-    if [[ $CHOICE -eq 1 ]]
-    then
-        echo "Keep in mind if this user has a laptop AND a desktop you will need to run the Mac option Twice"
-        sleep 5
-        /usr/bin/python3 ./mosyleCheckInMacOS $MOSYLEEMAIL
-    elif [[ $CHOICE -eq 2 ]]
-    then
-        echo "Checking in Ipad"
-        /usr/bin/python3 ./mosyleCheckInMacOS $MOSYLEEMAIL
-    elif [[ $CHOICE -eq 3 ]]
-    then
-        echo "Keep in mind if this user has a laptop AND a desktop you will need to run the Mac option after this"
-        sleep 5
-        echo "checking in Mac"
-        /usr/bin/python3 ./mosyleCheckInMacOS $MOSYLEEMAIL
-        echo "Checking in Ipad"
-        /usr/bin/python3 ./mosyleCheckInMacOS $MOSYLEEMAIL
-}       
-echo "Which choice would you like to do? Please enter a number"
-echo -n "[1]Google/Mosyle/SnipeIt Account Deletion [2]Device Checkin Only"
-read CHOICE
+if [[ $MOSYLECHOICE -eq 1 ]]
+then
+    echo "Keep in mind if this user has a laptop AND a desktop you will need to run the Mac option Twice"
+    sleep 5
+    /usr/bin/python3 ./mosyleCheckInMacOS.py $MOSYLEEMAIL
+elif [[ $MOSYLECHOICE -eq 2 ]]
+then
+    echo "Checking in Ipad"
+    /usr/bin/python3 ./mosyleCheckInIOS.py $MOSYLEEMAIL
+elif [[ $MOSYLECHOICE -eq 3 ]]
+then
+    echo "Keep in mind if this user has a laptop AND a desktop you will need to run the Mac option after this"
+    sleep 5
+    echo "checking in Mac"
+    /usr/bin/python3 ./mosyleCheckInMacOS.py $MOSYLEEMAIL
+    echo "Checking in Ipad"
+    /usr/bin/python3 ./mosyleCheckInIOS.py $MOSYLEEMAIL
+fi
+        }
 
-if [[ $CHOICE -eq 1 ]]
-then
-    echo "what is the email of the employee you are offboarding?: "
-    read EMPLOYEE
-    start_logger
-    email_verification
-    get_name
-    reset_password
-    reset_token
-    disable_user
-    remove_groups
-    suspend_user
-    remove_AdminRights
-    remove_license
-elif [[ $CHOICE -eq 2 ]]
-then
-  device_checkin_mosyle
+
+
+
+# echo "Which choice would you like to do? Please enter a number"
+# echo -n "[1]Google/Mosyle/SnipeIt Account Deletion [2]Device Checkin Only [3]exit: "
+# read CHOICE
+
+PS3='Which choice would you like to do? Please enter a number: '
+options=("Google/Mosyle/SnipeIt Account Deletion" "Device Checkin Only" "Quit")
+echo $PS3
+select opt in "${options[@]}"
+do
+    case $opt in
+        "Google/Mosyle/SnipeIt Account Deletion")
+                echo "what is the email of the employee you are offboarding?: "
+                read EMPLOYEE
+                start_logger
+                email_verification
+                get_name
+                reset_password
+                reset_token
+                disable_user
+                remove_groups
+                suspend_user
+                remove_AdminRights
+                remove_license
+            ;;
+        "Device Checkin Only")
+            device_checkin_mosyle
+            ;;
+        "Quit")
+            break
+            ;;
+        *) echo "invalid option $REPLY";;
+    esac
+done

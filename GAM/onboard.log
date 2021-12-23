@@ -1,0 +1,23 @@
+rene conducting onboarding for test4last4@coronacharter.org on Wed Dec 22 23:34:44 PST 2021
+creating email for test4last4@coronacharter.org
+Creating account for test4last4@coronacharter.org
+updating user test4last4@coronacharter.org...
+updating user test4last4@coronacharter.org...
+succefully created user
+Resetting GSuite password to R3setPWD!
+updating user test4last4@coronacharter.org...
+updating user test4last4@coronacharter.org...
+Which site is staff working at? Please enter a number
+[1]BCCS [2]Morcs [3]BCCHS [4]LSC: changing to BCCS Staff OU
+ moving test4last4@coronacharter.org to /Staff/BCCS Staff (1/1)
+is this a teacher or staff
+[1]Teacher [2]Staff [3]LSC: adding to BCCS Teachers Group & Assigning Admin Rights
+ Group: bccsteachers@coronacharter.org, test4last4@coronacharter.org Added as MEMBER
+Giving test4last4@coronacharter.org admin role Teacher_Admin_Password_Reset_BCCS for ORG_UNIT /Students/BCCS Students
+does this account need a Voice license
+[1]Yes [2]No: license skipped
+Creating user in mosyle
+{"status":"OK","elements":[{"id":"test4last4@coronacharter.org","status":"OK"}]}
+Creating user in Snipe IT
+success! User was successfully created.
+Which choice would you like to do? Please enter a number: 
