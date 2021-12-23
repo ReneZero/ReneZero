@@ -232,7 +232,7 @@ create_snipeit_user(){
   /usr/bin/python3 ./snipe-itAPI.py $SEMAIL $SCHOOLSITE $FNAME $LNAME
 }
 
-device_checkin_mosyle(){
+device_checkout_mosyle(){
   echo "what is the email of the user you are checking out items to"
   read mosyleUserID
   echo "Please enter the serial number of the Device you want to assign"
@@ -257,7 +257,7 @@ then
   create_snipeit_user
 elif [[ $CHOICE -eq 2 ]]
 then
-  device_checkin_mosyle
+  device_checkout_mosyle
 elif [[ $CHOICE -eq 3 ]]
   start_emailCreation
   email_verification
@@ -268,5 +268,5 @@ elif [[ $CHOICE -eq 3 ]]
   add_Voicelicense
   create_mosyle_user
   create_snipeit_user
-  device_checkin_mosyle
+  device_checkout_mosyle
 fi
