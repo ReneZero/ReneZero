@@ -58,10 +58,7 @@ def checkInMacOS():
                 while didYouFindIt is False:
                         pageUp(str(counter))
                         counter = counter + 1
-            
-                
-                
-                    
+                                
     
     # Converts the raw JSON template to a python object so we can work with it
     dataToSend = json.loads(payload2)
