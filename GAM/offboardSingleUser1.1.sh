@@ -5,28 +5,29 @@
 GAM=~/bin/gamadv-xtd3/gam
 
 # Get Command line arguments for Employee Email and Term Type
-POSITIONAL=()
-while [[ $# -gt 0 ]]; do
-    key="$1"
+# POSITIONAL=()
+# while [[ $# -gt 0 ]]; do
+#     key="$1"
 
-    case $key in
-    -e | --email)
-        EMPLOYEE="$2"
-        shift # past argument
-        shift # past value
-        ;;
-    -t | --termtype)
-        TERMTYPE="$2"
-        shift # past argument
-        shift # past value
-        ;;
-    *) # unknown option
-        POSITIONAL+=("$1") # save it in an array for later
-        shift              # past argument
-        ;;
-    esac
-done
-set -- "${POSITIONAL[@]}" # restore positional parameters
+#     case $key in
+#     -e | --email)
+#         EMPLOYEE="$2"
+#         shift # past argument
+#         shift # past value
+#         ;;
+#     -t | --termtype)
+#         TERMTYPE="$2"
+#         shift # past argument
+#         shift # past value
+#         ;;
+#     *) # unknown option
+#         POSITIONAL+=("$1") # save it in an array for later
+#         shift              # past argument
+#         ;;
+#     esac
+# done
+# set -- "${POSITIONAL[@]}" # restore positional parameters
+
 
 # Verify user exists in Google Suite
 email_verification() {
@@ -134,14 +135,48 @@ suspend_user() {
     echo "$EMPLOYEE moved to $ORG_UNIT"
 }
 
-# Main
-start_logger
-email_verification
-get_name
-reset_password
-reset_token
-disable_user
-remove_groups
-suspend_user
-remove_AdminRights
-remove_license
+device_checkout_mosyle(){
+    echo "Type in the email of the staff member: "
+    read MOSYLEEMAIL
+    echo "Which device would you like to checkin? Please enter a number"
+    echo -n "[1]Mac [2]Ipad [3]Both"
+    read MOSYLECHOICE
+    if [[ $CHOICE -eq 1 ]]
+    then
+        echo "Keep in mind if this user has a laptop AND a desktop you will need to run the Mac option Twice"
+        sleep 5
+        /usr/bin/python3 ./mosyleCheckInMacOS $MOSYLEEMAIL
+    elif [[ $CHOICE -eq 2 ]]
+    then
+        echo "Checking in Ipad"
+        /usr/bin/python3 ./mosyleCheckInMacOS $MOSYLEEMAIL
+    elif [[ $CHOICE -eq 3 ]]
+    then
+        echo "Keep in mind if this user has a laptop AND a desktop you will need to run the Mac option after this"
+        sleep 5
+        echo "checking in Mac"
+        /usr/bin/python3 ./mosyleCheckInMacOS $MOSYLEEMAIL
+        echo "Checking in Ipad"
+        /usr/bin/python3 ./mosyleCheckInMacOS $MOSYLEEMAIL
+}       
+echo "Which choice would you like to do? Please enter a number"
+echo -n "[1]Google/Mosyle/SnipeIt Account Deletion [2]Device Checkin Only"
+read CHOICE
+
+if [[ $CHOICE -eq 1 ]]
+then
+    echo "what is the email of the employee you are offboarding?: "
+    read EMPLOYEE
+    start_logger
+    email_verification
+    get_name
+    reset_password
+    reset_token
+    disable_user
+    remove_groups
+    suspend_user
+    remove_AdminRights
+    remove_license
+elif [[ $CHOICE -eq 2 ]]
+then
+  device_checkin_mosyle
