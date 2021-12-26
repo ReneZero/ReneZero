@@ -135,6 +135,7 @@ suspend_user() {
     echo "$EMPLOYEE moved to $ORG_UNIT"
 }
 
+
 device_checkin_mosyle() {
     echo "Type in the email of the staff member: "
     read MOSYLEEMAIL
@@ -144,20 +145,38 @@ device_checkin_mosyle() {
 if [[ $MOSYLECHOICE -eq 1 ]]
 then
     echo "Keep in mind if this user has a laptop AND a desktop you will need to run the Mac option Twice"
-    sleep 5
+    sleep 3
+    printf "checking in device in Mosyle"
     /usr/bin/python3 ./mosyleCheckInMacOS.py $MOSYLEEMAIL
+    echo "please enter serial number of mac for Snipe-IT Checkin: "
+    read SNIPEITMAC
+    echo "checking in Mac with snipe IT"
+    /usr/bin/python3 ./snipe-itCheckin.py $SNIPEITMAC
+
 elif [[ $MOSYLECHOICE -eq 2 ]]
 then
-    echo "Checking in Ipad"
+    echo "Checking in Ipad with Mosyle"
     /usr/bin/python3 ./mosyleCheckInIOS.py $MOSYLEEMAIL
+    echo "please enter serial number of Ipad for Snipe-IT Checkin: "
+    read SNIPEITIPAD
+    echo "checking in Ipad with snipe IT"
+    /usr/bin/python3 ./snipe-itCheckin.py $SNIPEITIPAD
 elif [[ $MOSYLECHOICE -eq 3 ]]
 then
     echo "Keep in mind if this user has a laptop AND a desktop you will need to run the Mac option after this"
-    sleep 5
+    sleep 3
     echo "checking in Mac"
     /usr/bin/python3 ./mosyleCheckInMacOS.py $MOSYLEEMAIL
     echo "Checking in Ipad"
     /usr/bin/python3 ./mosyleCheckInIOS.py $MOSYLEEMAIL
+    echo "please enter serial number of mac for Snipe-IT Checkin: "
+    read SNIPEITMAC
+    echo "checking in Mac with snipe IT"
+    /usr/bin/python3 ./snipe-itCheckin.py $SNIPEITMAC
+    echo "please enter serial number of Ipad for Snipe-IT Checkin: "
+    read SNIPEITIPAD
+    echo "checking in Ipad with snipe IT"
+    /usr/bin/python3 ./snipe-itCheckin.py $SNIPEITIPAD
 fi
         }
 

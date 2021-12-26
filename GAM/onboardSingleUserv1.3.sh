@@ -229,13 +229,17 @@ create_snipeit_user(){
   /usr/bin/python3 ./snipe-itAPI.py $staffEmail $SCHOOLSITE $firstName $lastName
 }
 
-device_checkout_mosyle(){
+device_checkout(){
   echo "Enter Staff email"
   read mosyleUserID
   echo "Please enter the serial number of the Device you want to assign"
   read SerialNum
+  echo "checking out device in Mosyle"
   /usr/bin/python3 ./mosyleCheckOut.py $mosyleUserID $SerialNum
+  echo "checking out device in Snipe-IT"
+  /usr/bin/python3 ./snipe-itCheckout.py $mosyleUserID $SerialNum
 }
+
 
 PS3='[1]Google/Mosyle/SnipeIt Account Creation only [2]Device Checkout Only [3]Both [4]Quit: '
 options=("Google/Mosyle/SnipeIt Account Creation only" "Device Checkout Only" "Both" "Quit")
@@ -254,7 +258,7 @@ do
             create_snipeit_user
             ;;
         "Device Checkout Only")
-            device_checkout_mosyle
+            device_checkout
             ;;
         "Both")
             start_emailCreation
@@ -266,7 +270,7 @@ do
             add_Voicelicense
             create_mosyle_user
             create_snipeit_user
-            device_checkout_mosyle
+            device_checkout
             ;;
         "Quit")
             break
