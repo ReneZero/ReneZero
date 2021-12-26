@@ -168,7 +168,7 @@ fi
 # echo -n "[1]Google/Mosyle/SnipeIt Account Deletion [2]Device Checkin Only [3]exit: "
 # read CHOICE
 
-PS3='Which choice would you like to do? Please enter a number: '
+PS3='[1]Google/Mosyle/SnipeIt Account Deletion [2]Device Checkin Only [3]Quit: '
 options=("Google/Mosyle/SnipeIt Account Deletion" "Device Checkin Only" "Quit")
 echo $PS3
 select opt in "${options[@]}"

@@ -230,16 +230,15 @@ create_snipeit_user(){
 }
 
 device_checkout_mosyle(){
-  echo "what is the email of the user you are checking out items to"
+  echo "Enter Staff email"
   read mosyleUserID
   echo "Please enter the serial number of the Device you want to assign"
   read SerialNum
   /usr/bin/python3 ./mosyleCheckOut.py $mosyleUserID $SerialNum
 }
 
-PS3='Which choice would you like to do? Please enter a number: '
+PS3='[1]Google/Mosyle/SnipeIt Account Creation only [2]Device Checkout Only [3]Both [4]Quit: '
 options=("Google/Mosyle/SnipeIt Account Creation only" "Device Checkout Only" "Both" "Quit")
-echo $PS3
 select opt in "${options[@]}"
 do
     case $opt in
