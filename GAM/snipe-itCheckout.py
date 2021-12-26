@@ -21,11 +21,12 @@ def getAssetID():
     json_data = json.loads(response.text)
 
     assetID = json_data['id']
+    
 
 def getUserID():
     global userID
     #####Get user ID by looking up email
-    url = "https://inventory.ypics.org/api/v1/users?search=" + userEmail + "&limit=50&offset=0&sort=created_at&order=desc&deleted=false&all=false"
+    url = "https://inventory.ypics.org/api/v1/users?limit=1&offset=0&sort=created_at&order=desc&username=" + userEmail + "&deleted=false&all=false="
 
     headers = {
         "Accept": "application/json",
@@ -36,13 +37,18 @@ def getUserID():
 
     json_data = json.loads(response.text)
 
-    userID = json_data['id']
+    userData = str(json_data['rows'])
+    
+    userID = userData[8:11]
+def test():
+    print("hi")
+        
 
 def checkOutAsset():
     global assetID
     global userID
     ######Check out using asset Id and User ID
-    url = "https://inventory.ypics.org/api/v1/hardware/" + assetID + "/checkout"
+    url = "https://inventory.ypics.org/api/v1/hardware/" + str(assetID) + "/checkout"
 
     payload = {
         "checkout_to_type": "user",
