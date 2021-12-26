@@ -36,21 +36,22 @@ def getUserID():
     response = requests.request("GET", url, headers=headers)
 
     json_data = json.loads(response.text)
-
+## grab user data info from the list rows into a string 
     userData = str(json_data['rows'])
-    
+    ### parse the user data string from the 8-11th character to grab the user ID
+    ## we had to do this since the rows table just has one index with a huge string
     userID = userData[8:11]
-def test():
-    print("hi")
         
 
 def checkOutAsset():
     global assetID
     global userID
     ######Check out using asset Id and User ID
+    ### input asset ID
     url = "https://inventory.ypics.org/api/v1/hardware/" + str(assetID) + "/checkout"
 
     payload = {
+        ###input userID we found as the value of the assigned user key
         "checkout_to_type": "user",
         "assigned_user": userID
     }
