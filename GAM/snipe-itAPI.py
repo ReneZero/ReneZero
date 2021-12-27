@@ -14,13 +14,13 @@ lastName = str(sys.argv[4])
 # schoolSite = "BCCS"
 # firstName = "Rene"
 # lastName = "Sanchez"
-url = "https://inventory.ypics.org/api/v1/users"
+url = "https://YourSnipeITSiteHere/api/v1/users"
 
 payload = {
     "first_name": "Renee",
     "last_name": "Sanchez",
     "username": "renee.api@coronacharter.org",
-    "password": "R3setPWD!",
+    "password": "PSSWORDHERE",
     "password_confirmation": "R3setPWD!",
     "email": "renee.api@coronacharter.org",
     "activated": True,
@@ -29,7 +29,7 @@ payload = {
 }
 headers = {
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMTAzMzkwZjE5ZTA1MzU1ZTkwNWYwMjA5YmQwNDU0Mjk2ZTY4OTJmNzgwMDgzMWI5NWRhZjg1YzY4Yjc3YjIxYTY2NDNkMDM3NjYzOTU5ZTEiLCJpYXQiOjE2Mzg4NTQwNzMsIm5iZiI6MTYzODg1NDA3MywiZXhwIjoyOTAxMTU4MDczLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.aIuMRFw8zXLuV8EocIRsG5lsRNtPZlPQZQNFxY_sAtMJTLJypt2MJ1I900l0NO1olMYuH0l4KJkK1K6Z3Vf-Rb-xv6E7HQ4fsUNyedEyos3jTZSje6zBtUNsMYnYWPqSAZ8A2G7d7zA-g_8hJRC0oRvHPvTNiRCTdlZiFmDgJ7fAMTGlHLvoKHl0AOqNKLdAU0Ng1UCn3aftr_7GdalD6f15Atzf1_uzardePeeeebxnwnG10THrCivtVh4w3PPwUG6UZ88T0ImPVKmu2XVu0xkc_MX9-jSkYo96sryCWpcMU3IGWnAL7sFfJTFCyDbB7Qx6oIjfCJ_bhdV00bxligXuSoEmmdfXpELpexQVm2GuzrVB2Nw7Cd2wtGrx4GGi9c0lfYEXiMLVEVX6zP7KsGPyD7qWP3OUiqyO0TlEBezjWv2hbQ6GkpfDwCGMtuH6S5RJ9EsyQ_dmBumzORGsvKK8Ka_rYTyzp04ElO6qQpzFCYPxQ4KCYhJus8a3yYTNOcE2OOo4VTlG7q94W3uCYxsV06zwg0hGE7QfFtUqj0jGOrOXWJt2dtRTOkkOLcckjndQKBz0Kt3riXjgQk_A4siMyToY6q1m4MhSxDJwyTyuIhmiwKtkQ0Ed3jo1Pn8-l3DxALD7E_9_nfsotOl1JaoFiZWh50ruqs5Ji-mDv6Q",
+    "Authorization": "Bearer PASTE API KEY HERE",
     "Content-Type": "application/json"
 }
 
@@ -68,11 +68,11 @@ print((str(json_data['status'])) + "!" + " " + (str(json_data['messages'])))
 #           Get request
 # import requests
 
-# url = "https://inventory.ypics.org/api/v1/users?limit=50&offset=0&sort=created_at&order=desc&username=mrsimonsen@coronacharter.org&deleted=false&all=false"
+# url = "https://YourSnipeItSiteHere.org/api/v1/users?limit=50&offset=0&sort=created_at&order=desc&username=mrsimonsen@coronacharter.org&deleted=false&all=false"
 
 # headers = {
 #     "Accept": "application/json",
-#     "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMTAzMzkwZjE5ZTA1MzU1ZTkwNWYwMjA5YmQwNDU0Mjk2ZTY4OTJmNzgwMDgzMWI5NWRhZjg1YzY4Yjc3YjIxYTY2NDNkMDM3NjYzOTU5ZTEiLCJpYXQiOjE2Mzg4NTQwNzMsIm5iZiI6MTYzODg1NDA3MywiZXhwIjoyOTAxMTU4MDczLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.aIuMRFw8zXLuV8EocIRsG5lsRNtPZlPQZQNFxY_sAtMJTLJypt2MJ1I900l0NO1olMYuH0l4KJkK1K6Z3Vf-Rb-xv6E7HQ4fsUNyedEyos3jTZSje6zBtUNsMYnYWPqSAZ8A2G7d7zA-g_8hJRC0oRvHPvTNiRCTdlZiFmDgJ7fAMTGlHLvoKHl0AOqNKLdAU0Ng1UCn3aftr_7GdalD6f15Atzf1_uzardePeeeebxnwnG10THrCivtVh4w3PPwUG6UZ88T0ImPVKmu2XVu0xkc_MX9-jSkYo96sryCWpcMU3IGWnAL7sFfJTFCyDbB7Qx6oIjfCJ_bhdV00bxligXuSoEmmdfXpELpexQVm2GuzrVB2Nw7Cd2wtGrx4GGi9c0lfYEXiMLVEVX6zP7KsGPyD7qWP3OUiqyO0TlEBezjWv2hbQ6GkpfDwCGMtuH6S5RJ9EsyQ_dmBumzORGsvKK8Ka_rYTyzp04ElO6qQpzFCYPxQ4KCYhJus8a3yYTNOcE2OOo4VTlG7q94W3uCYxsV06zwg0hGE7QfFtUqj0jGOrOXWJt2dtRTOkkOLcckjndQKBz0Kt3riXjgQk_A4siMyToY6q1m4MhSxDJwyTyuIhmiwKtkQ0Ed3jo1Pn8-l3DxALD7E_9_nfsotOl1JaoFiZWh50ruqs5Ji-mDv6Q"
+#     "Authorization": "Bearer PASTE API KEY HERE"
 # }
 
 # response = requests.request("GET", url, headers=headers)

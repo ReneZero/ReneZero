@@ -11,7 +11,7 @@ didYouFindIt = False
 counter = 2
 payload ='''
 {
-    "accessToken": "c8a5d56d90a0a21d10218906cd4424a52dcc54a154c1c826958255188d5421ad",
+    "accessToken": "PASTE API KEY HERE",
     "options": {
         "os": "mac",
         "page": "1",
@@ -25,7 +25,7 @@ payload ='''
 '''
 payload2 = '''
 {
-"accessToken": "c8a5d56d90a0a21d10218906cd4424a52dcc54a154c1c826958255188d5421ad",
+"accessToken": "PASTE API KEY HERE",
 "elements": [
     {
         "operation": "change_to_limbo",
