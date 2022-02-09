@@ -13,7 +13,7 @@ def checkOutDevice():
     #JSON template from mosyle to create a user
     payload ='''
     {
-        "accessToken": "PASTE API KEY HERE",
+        "accessToken": "Replace API key Here",
         "elements": [
             {
                 "operation": "assign_device",

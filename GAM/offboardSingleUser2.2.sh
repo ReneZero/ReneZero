@@ -99,18 +99,20 @@ disable_user() {
     $GAM user "${EMPLOYEE}" pop off
     $GAM update user "${EMPLOYEE}" gal off
 }
-
-remove_license() {
-    echo "Removing Education Plus License & OR Google Voice License"
-    ${GAM} user "${EMPLOYEE}" delete license 1010310002
-    ${GAM} user "${EMPLOYEE}" delete license 1010330004
-}
+# gam update group gvlg add members license voicestandard
+# Licenses are now removed automatically when "gam group_ns gvlg sync license voicestandard" is run
+# "gam group_ns e4e sync license gsuiteenterpriseeducation"
+# remove_license() {
+#     echo "Removing Education Plus License & OR Google Voice License"
+#     ${GAM} user "${EMPLOYEE}" delete license 1010310002
+#     ${GAM} user "${EMPLOYEE}" delete license 1010330004
+# }
 
 
 # Remove the employee from all groups
 remove_groups() {
     echo "Removing user from all groups"
-    ${GAM} info user "${EMPLOYEE}" | grep -A 10000 "Groups:" | grep -i -o '[A-Z0-9._%+-]\+@[A-Z0-9.-]\+\.[A-Z]\{2,4\}' >/tmp/"${EMPLOYEE}".txt
+    ${GAM} info user "${EMPLOYEE}" | grep -A 10000 "Groups:" | grep -i -o '[A-Z0-9._%+-]\+@[A-Z0-9.-]\+\.[A-Z]\{2,4\}' | uniq >/tmp/"${EMPLOYEE}".txt
     while read -r GROUP; do
         [ -z "$GROUP" ] && continue
         ${GAM} update group "${GROUP}" remove member "${EMPLOYEE}"
@@ -134,7 +136,10 @@ suspend_user() {
     ORG_UNIT=$(${GAM} info user "${EMPLOYEE}" | grep "Google Org")
     echo "$EMPLOYEE moved to $ORG_UNIT"
 }
-
+delete_mosyle_user(){
+    echo "Deleting user in Mosyle ..."
+    /usr/bin/python3 ./mosyleDeleteUserAPI.py $EMPLOYEE
+}
 
 device_checkin_mosyle() {
     echo "Type in the email of the staff member: "
@@ -187,13 +192,13 @@ fi
 # echo -n "[1]Google/Mosyle/SnipeIt Account Deletion [2]Device Checkin Only [3]exit: "
 # read CHOICE
 
-PS3='[1]Google/Mosyle/SnipeIt Account Deletion [2]Device Checkin Only [3]Quit: '
-options=("Google/Mosyle/SnipeIt Account Deletion" "Device Checkin Only" "Quit")
+PS3='[1]Google/Mosyle Account Deletion [2]Device Checkin Only [3]Quit: '
+options=("Google/Mosyle Account Deletion" "Device Checkin Only" "Quit")
 echo $PS3
 select opt in "${options[@]}"
 do
     case $opt in
-        "Google/Mosyle/SnipeIt Account Deletion")
+        "Google/Mosyle Account Deletion")
                 echo "what is the email of the employee you are offboarding?: "
                 read EMPLOYEE
                 start_logger
@@ -205,7 +210,7 @@ do
                 remove_groups
                 suspend_user
                 remove_AdminRights
-                remove_license
+                delete_mosyle_user
             ;;
         "Device Checkin Only")
             device_checkin_mosyle

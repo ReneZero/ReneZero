@@ -8,11 +8,11 @@ assetID = "0"
 ####Get asset ID by Asset Tag
 def getAssetID():
     global assetID
-    url = "https://YourSnipeITSiteHere/api/v1/hardware/bytag/" + assetTag
+    url = "https://inventory.ypics.org/api/v1/hardware/bytag/" + assetTag
 
     headers = {
         "Accept": "application/json",
-        "Authorization": "Bearer PASTE API KEY HERE"
+        "Authorization": "Bearer Replace API key Here"
     }
 
     response = requests.request("GET", url, headers=headers)
@@ -24,11 +24,11 @@ def getAssetID():
     
 def checkInAsset():
     #####Checkin Asset Using Asset ID
-    url = "https://YourSnipeITSiteHere/api/v1/hardware/" + str(assetID) + "/checkin"
+    url = "https://inventory.ypics.org/api/v1/hardware/" + str(assetID) + "/checkin"
 
     headers = {
         "Accept": "application/json",
-        "Authorization": "Bearer PASTE API KEY HERE",
+        "Authorization": "Bearer Replace API key Here",
         "Content-Type": "application/json"
     }
 
