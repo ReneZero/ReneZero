@@ -11,6 +11,8 @@ Also you will need to Install the Python Requirements which you can do so by ope
 
 **-OffboardSingleUser** is a GAM script we use when a staff member leaves midway through the year randomly. This script will remove them from the google directory change their password to a random generated password, suspend the account and move them to a suspended OU. This will also delete their user In mosyle as well and also check in any devices that they had checked out to them in Mosyle and Snipe IT 
 
+**-MoveGradeGroups** is a Script in order to push everyone up a grade level when it comes to groups in Gsuite since we have groups that are named 6thgrade,7thgrade ... etc. This is starting from 5th to 12th grade while pushing all the 12th grade users out. 
+
 **-OffBoard.csv** is a GAM script we use when offbaording staff or teachers during summer. You must create a csv file where you have a header that says email in order for the script to read the data from that collum. This only has google features so far no implemnation of Mosyle or Snipe IT
 
 **-onboardSingleUser** is also a GAM script that we use for our domain you can edit the portion that moves the user to the path of the OrgUnit and it should work for your orginization. This Creates the user for Gsuite, Moysle and SnipeIT. It can also check out devices and make sure it checks out the device to the user in mosyle and in SnipeIT.
