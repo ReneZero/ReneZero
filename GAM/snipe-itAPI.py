@@ -14,13 +14,13 @@ lastName = str(sys.argv[4])
 # schoolSite = "BCCS"
 # firstName = "Rene"
 # lastName = "Sanchez"
-url = "https://YourSnipeITSiteHere/api/v1/users"
+url = "https://inventory.ypics.org/api/v1/users"
 
 payload = {
     "first_name": "Renee",
     "last_name": "Sanchez",
     "username": "renee.api@coronacharter.org",
-    "password": "PSSWORDHERE",
+    "password": "R3setPWD!",
     "password_confirmation": "R3setPWD!",
     "email": "renee.api@coronacharter.org",
     "activated": True,
@@ -29,7 +29,7 @@ payload = {
 }
 headers = {
     "Accept": "application/json",
-    "Authorization": "Bearer PASTE API KEY HERE",
+    "Authorization": "Bearer Replace API key Here",
     "Content-Type": "application/json"
 }
 
@@ -68,11 +68,11 @@ print((str(json_data['status'])) + "!" + " " + (str(json_data['messages'])))
 #           Get request
 # import requests
 
-# url = "https://YourSnipeItSiteHere.org/api/v1/users?limit=50&offset=0&sort=created_at&order=desc&username=mrsimonsen@coronacharter.org&deleted=false&all=false"
+# url = "https://inventory.ypics.org/api/v1/users?limit=50&offset=0&sort=created_at&order=desc&username=mrsimonsen@coronacharter.org&deleted=false&all=false"
 
 # headers = {
 #     "Accept": "application/json",
-#     "Authorization": "Bearer PASTE API KEY HERE"
+#     "Authorization": "Bearer Replace API key Here"
 # }
 
 # response = requests.request("GET", url, headers=headers)

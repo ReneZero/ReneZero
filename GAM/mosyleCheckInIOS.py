@@ -11,7 +11,7 @@ didYouFindIt = False
 counter = 2
 payload ='''
 {
-    "accessToken": "PASTE API KEY HERE",
+    "accessToken": "Replace API key Here",
     "options": {
         "os": "ios",
         "page": "1",
@@ -25,7 +25,7 @@ payload ='''
 '''
 payload2 = '''
 {
-"accessToken": "PASTE API KEY HERE",
+"accessToken": "Replace API key Here",
 "elements": [
     {
         "operation": "change_to_limbo",
@@ -46,7 +46,7 @@ def checkInIOS():
     #### Getting list of devices
     r = requests.post('https://managerapi.mosyle.com/v2/listdevices', data=payload)
     json_data = json.loads(r.text)
-    print("Finding Device...")
+    print("Finding Device page 1...")
     ####Filtering until we find the one tied to their email
     for device in json_data['response']['devices']:
         if 'userid' in device:
@@ -54,10 +54,9 @@ def checkInIOS():
                 ####grabbing deviceUDID
                 uniqueID = device['deviceudid']
                 didYouFindIt = True
-            else:
-                while didYouFindIt is False:
-                        pageUp(str(counter))
-                        counter = counter + 1
+    while didYouFindIt is False:
+        pageUp(str(counter))
+        counter = counter + 1
                                 
     
     # Converts the raw JSON template to a python object so we can work with it
@@ -77,7 +76,7 @@ def pageUp(pageNum):
     global didYouFindIt
     global uniqueID
     editPayload['options']['page'] = str(pageNum)
-    print("Finding Device...")
+    print("Finding Device in page " + str(pageNum))
     pageUpRequest = json.dumps(editPayload)
     r3 = requests.post('https://managerapi.mosyle.com/v2/listdevices', data=pageUpRequest)
     r3Response = json.loads(r3.text)
